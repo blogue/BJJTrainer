@@ -45,8 +45,15 @@ namespace BJJTrainer.Controllers
         // GET: Drills/Create
         public IActionResult Create()
         {
-            ViewData["RoutineId"] = new SelectList(_context.Set<Routine>(), "RoutineId", "RoutineId");
-            ViewData["TechniqueId"] = new SelectList(_context.Technique, "TechniqueId", "TechniqueId");
+            var techniques = _context.Technique
+                                              .ToList()
+                                              .Select(t => new {
+                                                  TechniqueId = t.TechniqueId,
+                                                  Position =_context.Position.FirstOrDefault(p => p.PositionId == t.PositionId),
+                                                  Description = string.Format("{0} | {1}", t.Name, t.Position.Name)
+                                              });
+            ViewData["RoutineId"] = new SelectList(_context.Set<Routine>(), "RoutineId", "Name");
+            ViewData["TechniqueId"] = new SelectList(techniques, "TechniqueId", "Description");
             return View();
         }
 
@@ -81,8 +88,8 @@ namespace BJJTrainer.Controllers
             {
                 return NotFound();
             }
-            ViewData["RoutineId"] = new SelectList(_context.Set<Routine>(), "RoutineId", "RoutineId", drill.RoutineId);
-            ViewData["TechniqueId"] = new SelectList(_context.Technique, "TechniqueId", "TechniqueId", drill.TechniqueId);
+            ViewData["RoutineId"] = new SelectList(_context.Set<Routine>(), "RoutineId", "Name", drill.RoutineId);
+            ViewData["TechniqueId"] = new SelectList(_context.Technique, "TechniqueId", "Name", drill.TechniqueId);
             return View(drill);
         }
 

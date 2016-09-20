@@ -32,7 +32,11 @@ namespace BJJTrainer.Controllers
                 return NotFound();
             }
 
-            var routine = await _context.Routine.SingleOrDefaultAsync(m => m.RoutineId == id);
+            var routine = await _context.Routine
+                .Include(r => r.Drills)
+                .ThenInclude(d => d.Technique)
+                .ThenInclude(t => t.Position)
+                .SingleOrDefaultAsync(m => m.RoutineId == id);
             if (routine == null)
             {
                 return NotFound();

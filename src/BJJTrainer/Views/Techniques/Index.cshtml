@@ -15,6 +15,12 @@
             <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
+            <th>
+                Position
+            </th>
+            <th>
+                Category
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -23,6 +29,12 @@
         <tr>
             <td>
                 @Html.ActionLink(item.Name, "Details", "Techniques", new { id = item.TechniqueId })
+            </td>
+            <td>
+                @Html.ActionLink(item.Position.Name, "Details", "Positions", new { id = item.Position.PositionId })
+            </td>
+            <td>
+                @Html.ActionLink(item.Category.Name, "Details", "Categories", new { id = item.Category.CategoryId })
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.TechniqueId">Edit</a> |
