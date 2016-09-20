@@ -8,9 +8,10 @@ using BJJTrainer.Data;
 namespace BJJTrainer.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20160920183048_DrillRoutineModels")]
+    partial class DrillRoutineModels
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.0-rtm-21431")
@@ -63,84 +64,6 @@ namespace BJJTrainer.Data.Migrations
                         .HasName("UserNameIndex");
 
                     b.ToTable("AspNetUsers");
-                });
-
-            modelBuilder.Entity("BJJTrainer.Models.Category", b =>
-                {
-                    b.Property<int>("CategoryId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Name");
-
-                    b.HasKey("CategoryId");
-
-                    b.ToTable("Categories");
-                });
-
-            modelBuilder.Entity("BJJTrainer.Models.Drill", b =>
-                {
-                    b.Property<int>("DrillId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Description");
-
-                    b.Property<int>("RoutineId");
-
-                    b.Property<int>("TechniqueId");
-
-                    b.Property<int>("Time");
-
-                    b.HasKey("DrillId");
-
-                    b.HasIndex("RoutineId");
-
-                    b.HasIndex("TechniqueId");
-
-                    b.ToTable("Drills");
-                });
-
-            modelBuilder.Entity("BJJTrainer.Models.Position", b =>
-                {
-                    b.Property<int>("PositionId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Name");
-
-                    b.HasKey("PositionId");
-
-                    b.ToTable("Positions");
-                });
-
-            modelBuilder.Entity("BJJTrainer.Models.Routine", b =>
-                {
-                    b.Property<int>("RoutineId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Name");
-
-                    b.HasKey("RoutineId");
-
-                    b.ToTable("Routines");
-                });
-
-            modelBuilder.Entity("BJJTrainer.Models.Technique", b =>
-                {
-                    b.Property<int>("TechniqueId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("CategoryId");
-
-                    b.Property<string>("Name");
-
-                    b.Property<int>("PositionId");
-
-                    b.HasKey("TechniqueId");
-
-                    b.HasIndex("CategoryId");
-
-                    b.HasIndex("PositionId");
-
-                    b.ToTable("Techniques");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole", b =>
@@ -248,32 +171,6 @@ namespace BJJTrainer.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
-                });
-
-            modelBuilder.Entity("BJJTrainer.Models.Drill", b =>
-                {
-                    b.HasOne("BJJTrainer.Models.Routine", "Routine")
-                        .WithMany("Drills")
-                        .HasForeignKey("RoutineId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("BJJTrainer.Models.Technique", "Technique")
-                        .WithMany()
-                        .HasForeignKey("TechniqueId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("BJJTrainer.Models.Technique", b =>
-                {
-                    b.HasOne("BJJTrainer.Models.Category", "Category")
-                        .WithMany("Techniques")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("BJJTrainer.Models.Position", "Position")
-                        .WithMany("Techniques")
-                        .HasForeignKey("PositionId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>
