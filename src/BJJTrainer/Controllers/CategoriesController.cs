@@ -17,10 +17,10 @@ namespace BJJTrainer.Controllers
         {
             _context = context;    
         }
-
-        public CategoriesController()
-        {
-        }
+        //Constructor for testing purposes.
+        //public CategoriesController()
+        //{
+        //}
 
         // GET: Categories
         public async Task<IActionResult> Index()
