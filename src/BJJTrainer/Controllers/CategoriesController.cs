@@ -20,7 +20,7 @@ namespace BJJTrainer.Controllers
 
         // GET: Categories
         public async Task<IActionResult> Index()
-        {
+        {             
             return View(await _context.Category.ToListAsync());
         }
 
@@ -34,6 +34,7 @@ namespace BJJTrainer.Controllers
 
             var category = await _context.Category
                 .Include(c => c.Techniques)
+                .ThenInclude(t => t.Position)
                 .SingleOrDefaultAsync(m => m.CategoryId == id);
             if (category == null)
             {

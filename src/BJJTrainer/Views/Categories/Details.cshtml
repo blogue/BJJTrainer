@@ -23,7 +23,7 @@
             <ul>
                 @foreach (var technique in Model.Techniques)
                 {
-                    <li><a asp-area="" asp-controller="Techniques" asp-action="Details" asp-route-id="@technique.TechniqueId">@technique.Name</a></li>
+                    <li><a asp-area="" asp-controller="Techniques" asp-action="Details" asp-route-id="@technique.TechniqueId">@technique.Name from @technique.Position.Name</a></li>
 
                 }
             </ul>

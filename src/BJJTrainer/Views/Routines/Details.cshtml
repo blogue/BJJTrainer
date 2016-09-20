@@ -7,29 +7,48 @@
 <h2>Details</h2>
 
 <div>
-    <h4>Routine</h4>
+    <h1>Routine: @Html.DisplayFor(model => model.Name)</h1>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt>
-            Drills:
-        </dt>
-        <dd>
-            <ul>
-                @foreach (var drill in Model.Drills)
-                {
-                    <li><a asp-area="" asp-controller="Drills" asp-action="Details" asp-route-id="@drill.TechniqueId">@drill.Description</a> | @drill.Technique.Name | Position: @drill.Technique.Position.Name | Seconds: @drill.Time </li>
-
-                }
-            </ul>
-        </dd>
-    </dl>
 </div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Description
+            </th>
+            <th>
+                Technique
+            </th>
+            <th>
+                Position
+            </th>
+            <th>
+                Time
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var drill in Model.Drills)
+        {
+            <tr>
+                <td>
+                    <a asp-area="" asp-controller="Drills" asp-action="Details" asp-route-id="@drill.TechniqueId">@drill.Description</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => drill.Technique.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => drill.Technique.Position.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => drill.Time)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<hr />
 <div>
     <a asp-action="Edit" asp-route-id="@Model.RoutineId">Edit</a> |
     <a asp-action="Index">Back to List</a>

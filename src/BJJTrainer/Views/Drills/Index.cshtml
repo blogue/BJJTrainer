@@ -16,24 +16,35 @@
                 @Html.DisplayNameFor(model => model.Description)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Technique)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Technique.Position)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Time)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var drill in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Description)
+                @Html.ActionLink(drill.Description, "Details", new { id = drill.DrillId })
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Time)
+                @Html.DisplayFor(modelItem => drill.Technique.Name)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.DrillId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.DrillId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.DrillId">Delete</a>
+                @Html.DisplayFor(modelItem => drill.Technique.Position.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => drill.Time)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@drill.DrillId">Edit</a> |
+                <a asp-action="Delete" asp-route-id="@drill.DrillId">Delete</a>
             </td>
         </tr>
 }

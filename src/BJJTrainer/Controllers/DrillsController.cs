@@ -21,7 +21,7 @@ namespace BJJTrainer.Controllers
         // GET: Drills
         public async Task<IActionResult> Index()
         {
-            var bJJTrainerContext = _context.Drill.Include(d => d.Routine).Include(d => d.Technique);
+            var bJJTrainerContext = _context.Drill.Include(d => d.Routine).Include(d => d.Technique).ThenInclude(t => t.Position);
             return View(await bJJTrainerContext.ToListAsync());
         }
 
@@ -46,12 +46,12 @@ namespace BJJTrainer.Controllers
         public IActionResult Create()
         {
             var techniques = _context.Technique
-                                              .ToList()
-                                              .Select(t => new {
-                                                  TechniqueId = t.TechniqueId,
-                                                  Position =_context.Position.FirstOrDefault(p => p.PositionId == t.PositionId),
-                                                  Description = string.Format("{0} | {1}", t.Name, t.Position.Name)
-                                              });
+                                            .ToList()
+                                            .Select(t => new {
+                                                TechniqueId = t.TechniqueId,
+                                                Position =_context.Position.FirstOrDefault(p => p.PositionId == t.PositionId),
+                                                Description = string.Format("{0} | {1}", t.Name, t.Position.Name)
+                                            });
             ViewData["RoutineId"] = new SelectList(_context.Set<Routine>(), "RoutineId", "Name");
             ViewData["TechniqueId"] = new SelectList(techniques, "TechniqueId", "Description");
             return View();
@@ -88,8 +88,16 @@ namespace BJJTrainer.Controllers
             {
                 return NotFound();
             }
+
+            var techniques = _context.Technique
+                                            .ToList()
+                                            .Select(t => new {
+                                                TechniqueId = t.TechniqueId,
+                                                Position = _context.Position.FirstOrDefault(p => p.PositionId == t.PositionId),
+                                                Description = string.Format("{0} | {1}", t.Name, t.Position.Name)
+                                            });
             ViewData["RoutineId"] = new SelectList(_context.Set<Routine>(), "RoutineId", "Name", drill.RoutineId);
-            ViewData["TechniqueId"] = new SelectList(_context.Technique, "TechniqueId", "Name", drill.TechniqueId);
+            ViewData["TechniqueId"] = new SelectList(techniques, "TechniqueId", "Description", drill.TechniqueId);
             return View(drill);
         }
 
