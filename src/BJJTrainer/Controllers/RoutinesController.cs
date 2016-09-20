@@ -21,7 +21,13 @@ namespace BJJTrainer.Controllers
         // GET: Routines
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Routine.ToListAsync());
+            var routines = await _context.Routine
+                .Include(r => r.Drills)
+                .ThenInclude(d => d.Technique)
+                .ThenInclude(t => t.Position)
+                .ToListAsync();
+
+            return View(routines);
         }
 
         // GET: Routines/Details/5

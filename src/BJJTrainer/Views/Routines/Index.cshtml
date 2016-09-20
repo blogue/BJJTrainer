@@ -15,19 +15,31 @@
             <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
+            <th>
+                Total Time
+            </th>
+            <th>
+                Techniques
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var routine in Model) {
         <tr>
             <td>
-                @Html.ActionLink(item.Name, "Details", new { id = item.RoutineId })
+                @Html.ActionLink(routine.Name, "Details", new { id = routine.RoutineId })
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.RoutineId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.RoutineId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.RoutineId">Delete</a>
+               Placeholder
+            </td>
+            <td>
+                @routine.Drills.Count
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@routine.RoutineId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@routine.RoutineId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@routine.RoutineId">Delete</a>
             </td>
         </tr>
 }
