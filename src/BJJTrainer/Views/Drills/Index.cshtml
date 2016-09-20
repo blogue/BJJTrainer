@@ -1,0 +1,41 @@
+@model IEnumerable<BJJTrainer.Models.Drill>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Time)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Time)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.DrillId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.DrillId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.DrillId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

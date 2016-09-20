@@ -19,5 +19,9 @@ namespace BJJTrainer.Models
         public DbSet<Position> Position { get; set; }
 
         public DbSet<Technique> Technique { get; set; }
+
+        public DbSet<Drill> Drill { get; set; }
+
+        public DbSet<Routine> Routine { get; set; }
     }
 }
