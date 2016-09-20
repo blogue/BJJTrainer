@@ -16,6 +16,18 @@
         <dd>
             @Html.DisplayFor(model => model.Name)
         </dd>
+        <dt>
+            Techniques
+        </dt>
+        <dd>
+            <ul>
+                @foreach (var technique in Model.Techniques)
+                {
+                    <li><a asp-area="" asp-controller="Techniques" asp-action="Details" asp-route-id="@technique.TechniqueId">@technique.Name</a></li>
+
+                }
+            </ul>
+        </dd>
     </dl>
 </div>
 <div>
