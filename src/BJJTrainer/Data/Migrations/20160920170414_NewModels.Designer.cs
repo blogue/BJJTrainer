@@ -8,8 +8,8 @@ using BJJTrainer.Data;
 namespace BJJTrainer.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20160920163722_Initial")]
-    partial class Initial
+    [Migration("20160920170414_NewModels")]
+    partial class NewModels
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

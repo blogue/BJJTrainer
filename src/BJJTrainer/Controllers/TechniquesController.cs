@@ -45,8 +45,8 @@ namespace BJJTrainer.Controllers
         // GET: Techniques/Create
         public IActionResult Create()
         {
-            ViewData["CategoryId"] = new SelectList(_context.Category, "CategoryId", "CategoryId");
-            ViewData["PositionId"] = new SelectList(_context.Position, "PositionId", "PositionId");
+            ViewData["CategoryId"] = new SelectList(_context.Category, "CategoryId", "Name");
+            ViewData["PositionId"] = new SelectList(_context.Position, "PositionId", "Name");
             return View();
         }
 

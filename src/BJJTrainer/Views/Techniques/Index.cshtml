@@ -22,7 +22,7 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Name)
+                @Html.ActionLink(item.Name, "Details", "Techniques", new { id = item.TechniqueId })
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.TechniqueId">Edit</a> |
