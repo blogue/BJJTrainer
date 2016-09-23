@@ -1,4 +1,4 @@
-﻿{
+{
   "userSecretsId": "aspnet-BJJTrainer-ed9300ec-1099-414c-9e71-7e4170034465",
 
   "dependencies": {
@@ -40,10 +40,11 @@
       "version": "1.0.0-preview2-final",
       "type": "build"
     },
-    "Microsoft.VisualStudio.Web.CodeGenerators.Mvc":  {
+    "Microsoft.VisualStudio.Web.CodeGenerators.Mvc": {
       "version": "1.0.0-preview2-final",
       "type": "build"
-    }
+    },
+    "Microsoft.EntityFrameworkCore": "1.0.1"
   },
 
   "tools": {

@@ -6,14 +6,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BJJTrainer.Models;
+using BJJTrainer.Data;
 
 namespace BJJTrainer.Controllers
 {
     public class PositionsController : Controller
     {
-        private readonly BJJTrainerContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public PositionsController(BJJTrainerContext context)
+        public PositionsController(ApplicationDbContext context)
         {
             _context = context;    
         }
@@ -21,7 +22,7 @@ namespace BJJTrainer.Controllers
         // GET: Positions
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Position.ToListAsync());
+            return View(await _context.Positions.ToListAsync());
         }
 
         // GET: Positions/Details/5
@@ -32,7 +33,7 @@ namespace BJJTrainer.Controllers
                 return NotFound();
             }
 
-            var position = await _context.Position
+            var position = await _context.Positions
                 .Include(p => p.Techniques)
                 .SingleOrDefaultAsync(m => m.PositionId == id);
             if (position == null)
@@ -73,7 +74,7 @@ namespace BJJTrainer.Controllers
                 return NotFound();
             }
 
-            var position = await _context.Position.SingleOrDefaultAsync(m => m.PositionId == id);
+            var position = await _context.Positions.SingleOrDefaultAsync(m => m.PositionId == id);
             if (position == null)
             {
                 return NotFound();
@@ -124,7 +125,7 @@ namespace BJJTrainer.Controllers
                 return NotFound();
             }
 
-            var position = await _context.Position.SingleOrDefaultAsync(m => m.PositionId == id);
+            var position = await _context.Positions.SingleOrDefaultAsync(m => m.PositionId == id);
             if (position == null)
             {
                 return NotFound();
@@ -138,15 +139,15 @@ namespace BJJTrainer.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var position = await _context.Position.SingleOrDefaultAsync(m => m.PositionId == id);
-            _context.Position.Remove(position);
+            var position = await _context.Positions.SingleOrDefaultAsync(m => m.PositionId == id);
+            _context.Positions.Remove(position);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
         private bool PositionExists(int id)
         {
-            return _context.Position.Any(e => e.PositionId == id);
+            return _context.Positions.Any(e => e.PositionId == id);
         }
     }
 }

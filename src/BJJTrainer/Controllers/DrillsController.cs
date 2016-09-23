@@ -6,14 +6,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BJJTrainer.Models;
+using BJJTrainer.Data;
 
 namespace BJJTrainer.Controllers
 {
     public class DrillsController : Controller
     {
-        private readonly BJJTrainerContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public DrillsController(BJJTrainerContext context)
+        public DrillsController(ApplicationDbContext context)
         {
             _context = context;    
         }
@@ -21,7 +22,7 @@ namespace BJJTrainer.Controllers
         // GET: Drills
         public async Task<IActionResult> Index()
         {
-            var bJJTrainerContext = _context.Drill.Include(d => d.Routine).Include(d => d.Technique).ThenInclude(t => t.Position);
+            var bJJTrainerContext = _context.Drills.Include(d => d.Routine).Include(d => d.Technique).ThenInclude(t => t.Position);
             return View(await bJJTrainerContext.ToListAsync());
         }
 
@@ -33,7 +34,7 @@ namespace BJJTrainer.Controllers
                 return NotFound();
             }
 
-            var drill = await _context.Drill.SingleOrDefaultAsync(m => m.DrillId == id);
+            var drill = await _context.Drills.SingleOrDefaultAsync(m => m.DrillId == id);
             if (drill == null)
             {
                 return NotFound();
@@ -45,11 +46,10 @@ namespace BJJTrainer.Controllers
         // GET: Drills/Create
         public IActionResult Create()
         {
-            var techniques = _context.Technique
-                                            .ToList()
+            var techniques = _context.Techniques.ToList()
                                             .Select(t => new {
                                                 TechniqueId = t.TechniqueId,
-                                                Position =_context.Position.FirstOrDefault(p => p.PositionId == t.PositionId),
+                                                Position =_context.Positions.FirstOrDefault(p => p.PositionId == t.PositionId),
                                                 Description = string.Format("{0} | {1}", t.Name, t.Position.Name)
                                             });
             ViewData["RoutineId"] = new SelectList(_context.Set<Routine>(), "RoutineId", "Name");
@@ -71,7 +71,7 @@ namespace BJJTrainer.Controllers
                 return RedirectToAction("Index");
             }
             ViewData["RoutineId"] = new SelectList(_context.Set<Routine>(), "RoutineId", "RoutineId", drill.RoutineId);
-            ViewData["TechniqueId"] = new SelectList(_context.Technique, "TechniqueId", "TechniqueId", drill.TechniqueId);
+            ViewData["TechniqueId"] = new SelectList(_context.Techniques, "TechniqueId", "TechniqueId", drill.TechniqueId);
             return View(drill);
         }
 
@@ -83,17 +83,17 @@ namespace BJJTrainer.Controllers
                 return NotFound();
             }
 
-            var drill = await _context.Drill.SingleOrDefaultAsync(m => m.DrillId == id);
+            var drill = await _context.Drills.SingleOrDefaultAsync(m => m.DrillId == id);
             if (drill == null)
             {
                 return NotFound();
             }
 
-            var techniques = _context.Technique
+            var techniques = _context.Techniques
                                             .ToList()
                                             .Select(t => new {
                                                 TechniqueId = t.TechniqueId,
-                                                Position = _context.Position.FirstOrDefault(p => p.PositionId == t.PositionId),
+                                                Position = _context.Positions.FirstOrDefault(p => p.PositionId == t.PositionId),
                                                 Description = string.Format("{0} | {1}", t.Name, t.Position.Name)
                                             });
             ViewData["RoutineId"] = new SelectList(_context.Set<Routine>(), "RoutineId", "Name", drill.RoutineId);
@@ -134,7 +134,7 @@ namespace BJJTrainer.Controllers
                 return RedirectToAction("Index");
             }
             ViewData["RoutineId"] = new SelectList(_context.Set<Routine>(), "RoutineId", "RoutineId", drill.RoutineId);
-            ViewData["TechniqueId"] = new SelectList(_context.Technique, "TechniqueId", "TechniqueId", drill.TechniqueId);
+            ViewData["TechniqueId"] = new SelectList(_context.Techniques, "TechniqueId", "TechniqueId", drill.TechniqueId);
             return View(drill);
         }
 
@@ -146,7 +146,7 @@ namespace BJJTrainer.Controllers
                 return NotFound();
             }
 
-            var drill = await _context.Drill.SingleOrDefaultAsync(m => m.DrillId == id);
+            var drill = await _context.Drills.SingleOrDefaultAsync(m => m.DrillId == id);
             if (drill == null)
             {
                 return NotFound();
@@ -160,15 +160,15 @@ namespace BJJTrainer.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var drill = await _context.Drill.SingleOrDefaultAsync(m => m.DrillId == id);
-            _context.Drill.Remove(drill);
+            var drill = await _context.Drills.SingleOrDefaultAsync(m => m.DrillId == id);
+            _context.Drills.Remove(drill);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
         private bool DrillExists(int id)
         {
-            return _context.Drill.Any(e => e.DrillId == id);
+            return _context.Drills.Any(e => e.DrillId == id);
         }
     }
 }

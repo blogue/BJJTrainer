@@ -6,14 +6,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BJJTrainer.Models;
+using BJJTrainer.Data;
 
 namespace BJJTrainer.Controllers
 {
     public class CategoriesController : Controller
     {
-        private readonly BJJTrainerContext _context;
-
-        public CategoriesController(BJJTrainerContext context)
+        private readonly ApplicationDbContext _context;
+        
+        public CategoriesController(ApplicationDbContext context)
         {
             _context = context;    
         }
@@ -25,7 +26,7 @@ namespace BJJTrainer.Controllers
         // GET: Categories
         public async Task<IActionResult> Index()
         {             
-            return View(await _context.Category.ToListAsync());
+            return View(await _context.Categories.ToListAsync());
         }
 
         // GET: Categories/Details/5
@@ -36,16 +37,16 @@ namespace BJJTrainer.Controllers
                 return NotFound();
             }
 
-            var category = await _context.Category
+            var categories = await _context.Categories
                 .Include(c => c.Techniques)
                 .ThenInclude(t => t.Position)
                 .SingleOrDefaultAsync(m => m.CategoryId == id);
-            if (category == null)
+            if (categories == null)
             {
                 return NotFound();
             }
 
-            return View(category);
+            return View(categories);
         }
 
         // GET: Categories/Create
@@ -78,7 +79,7 @@ namespace BJJTrainer.Controllers
                 return NotFound();
             }
 
-            var category = await _context.Category.SingleOrDefaultAsync(m => m.CategoryId == id);
+            var category = await _context.Categories.SingleOrDefaultAsync(m => m.CategoryId == id);
             if (category == null)
             {
                 return NotFound();
@@ -129,7 +130,7 @@ namespace BJJTrainer.Controllers
                 return NotFound();
             }
 
-            var category = await _context.Category.SingleOrDefaultAsync(m => m.CategoryId == id);
+            var category = await _context.Categories.SingleOrDefaultAsync(m => m.CategoryId == id);
             if (category == null)
             {
                 return NotFound();
@@ -143,15 +144,15 @@ namespace BJJTrainer.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var category = await _context.Category.SingleOrDefaultAsync(m => m.CategoryId == id);
-            _context.Category.Remove(category);
+            var category = await _context.Categories.SingleOrDefaultAsync(m => m.CategoryId == id);
+            _context.Categories.Remove(category);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
         private bool CategoryExists(int id)
         {
-            return _context.Category.Any(e => e.CategoryId == id);
+            return _context.Categories.Any(e => e.CategoryId == id);
         }
     }
 }

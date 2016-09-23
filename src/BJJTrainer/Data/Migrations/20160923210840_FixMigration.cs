@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace BJJTrainer.Migrations
+namespace BJJTrainer.Data.Migrations
 {
-    public partial class DrillRoutineModels : Migration
+    public partial class FixMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

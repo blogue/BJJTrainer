@@ -6,14 +6,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BJJTrainer.Models;
+using BJJTrainer.Data;
 
 namespace BJJTrainer.Controllers
 {
     public class RoutinesController : Controller
     {
-        private readonly BJJTrainerContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public RoutinesController(BJJTrainerContext context)
+        public RoutinesController(ApplicationDbContext context)
         {
             _context = context;    
         }
@@ -21,7 +22,7 @@ namespace BJJTrainer.Controllers
         // GET: Routines
         public async Task<IActionResult> Index()
         {
-            var routines = await _context.Routine
+            var routines = await _context.Routines
                 .Include(r => r.Drills)
                 .ThenInclude(d => d.Technique)
                 .ThenInclude(t => t.Position)
@@ -38,7 +39,7 @@ namespace BJJTrainer.Controllers
                 return NotFound();
             }
 
-            var routine = await _context.Routine
+            var routine = await _context.Routines
                 .Include(r => r.Drills)
                 .ThenInclude(d => d.Technique)
                 .ThenInclude(t => t.Position)
@@ -81,7 +82,7 @@ namespace BJJTrainer.Controllers
                 return NotFound();
             }
 
-            var routine = await _context.Routine.SingleOrDefaultAsync(m => m.RoutineId == id);
+            var routine = await _context.Routines.SingleOrDefaultAsync(m => m.RoutineId == id);
             if (routine == null)
             {
                 return NotFound();
@@ -132,7 +133,7 @@ namespace BJJTrainer.Controllers
                 return NotFound();
             }
 
-            var routine = await _context.Routine.SingleOrDefaultAsync(m => m.RoutineId == id);
+            var routine = await _context.Routines.SingleOrDefaultAsync(m => m.RoutineId == id);
             if (routine == null)
             {
                 return NotFound();
@@ -146,15 +147,15 @@ namespace BJJTrainer.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var routine = await _context.Routine.SingleOrDefaultAsync(m => m.RoutineId == id);
-            _context.Routine.Remove(routine);
+            var routine = await _context.Routines.SingleOrDefaultAsync(m => m.RoutineId == id);
+            _context.Routines.Remove(routine);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
         private bool RoutineExists(int id)
         {
-            return _context.Routine.Any(e => e.RoutineId == id);
+            return _context.Routines.Any(e => e.RoutineId == id);
         }
     }
 }

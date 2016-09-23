@@ -10,11 +10,6 @@ namespace BJJTrainer.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-        public DbSet<Position> Positions { get; set; }
-        public DbSet<Category> Categories { get; set; }
-        public DbSet<Technique> Techniques { get; set; }
-        public DbSet<Drill> Drills { get; set; }
-        public DbSet<Routine> Routines { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
@@ -27,5 +22,10 @@ namespace BJJTrainer.Data
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
         }
+        public DbSet<Position> Positions { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Technique> Techniques { get; set; }
+        public DbSet<Drill> Drills { get; set; }
+        public DbSet<Routine> Routines { get; set; }
     }
 }

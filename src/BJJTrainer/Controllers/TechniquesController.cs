@@ -6,14 +6,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BJJTrainer.Models;
+using BJJTrainer.Data;
 
 namespace BJJTrainer.Controllers
 {
     public class TechniquesController : Controller
     {
-        private readonly BJJTrainerContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public TechniquesController(BJJTrainerContext context)
+        public TechniquesController(ApplicationDbContext context)
         {
             _context = context;    
         }
@@ -21,7 +22,7 @@ namespace BJJTrainer.Controllers
         // GET: Techniques
         public async Task<IActionResult> Index()
         {
-            var bJJTrainerContext = _context.Technique.Include(t => t.Category).Include(t => t.Position);
+            var bJJTrainerContext = _context.Techniques.Include(t => t.Category).Include(t => t.Position);
             return View(await bJJTrainerContext.ToListAsync());
         }
 
@@ -33,7 +34,7 @@ namespace BJJTrainer.Controllers
                 return NotFound();
             }
 
-            var technique = await _context.Technique
+            var technique = await _context.Techniques
                 .Include(t => t.Category)
                 .Include(t => t.Position)
                 .SingleOrDefaultAsync(m => m.TechniqueId == id);
@@ -48,8 +49,8 @@ namespace BJJTrainer.Controllers
         // GET: Techniques/Create
         public IActionResult Create()
         {
-            ViewData["CategoryId"] = new SelectList(_context.Category, "CategoryId", "Name");
-            ViewData["PositionId"] = new SelectList(_context.Position, "PositionId", "Name");
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "Name");
+            ViewData["PositionId"] = new SelectList(_context.Positions, "PositionId", "Name");
             return View();
         }
 
@@ -66,8 +67,8 @@ namespace BJJTrainer.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            ViewData["CategoryId"] = new SelectList(_context.Category, "CategoryId", "CategoryId", technique.CategoryId);
-            ViewData["PositionId"] = new SelectList(_context.Position, "PositionId", "PositionId", technique.PositionId);
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryId", technique.CategoryId);
+            ViewData["PositionId"] = new SelectList(_context.Positions, "PositionId", "PositionId", technique.PositionId);
             return View(technique);
         }
 
@@ -79,13 +80,13 @@ namespace BJJTrainer.Controllers
                 return NotFound();
             }
 
-            var technique = await _context.Technique.SingleOrDefaultAsync(m => m.TechniqueId == id);
+            var technique = await _context.Techniques.SingleOrDefaultAsync(m => m.TechniqueId == id);
             if (technique == null)
             {
                 return NotFound();
             }
-            ViewData["CategoryId"] = new SelectList(_context.Category, "CategoryId", "CategoryId", technique.CategoryId);
-            ViewData["PositionId"] = new SelectList(_context.Position, "PositionId", "PositionId", technique.PositionId);
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryId", technique.CategoryId);
+            ViewData["PositionId"] = new SelectList(_context.Positions, "PositionId", "PositionId", technique.PositionId);
             return View(technique);
         }
 
@@ -121,8 +122,8 @@ namespace BJJTrainer.Controllers
                 }
                 return RedirectToAction("Index");
             }
-            ViewData["CategoryId"] = new SelectList(_context.Category, "CategoryId", "CategoryId", technique.CategoryId);
-            ViewData["PositionId"] = new SelectList(_context.Position, "PositionId", "PositionId", technique.PositionId);
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryId", technique.CategoryId);
+            ViewData["PositionId"] = new SelectList(_context.Positions, "PositionId", "PositionId", technique.PositionId);
             return View(technique);
         }
 
@@ -134,7 +135,7 @@ namespace BJJTrainer.Controllers
                 return NotFound();
             }
 
-            var technique = await _context.Technique.SingleOrDefaultAsync(m => m.TechniqueId == id);
+            var technique = await _context.Techniques.SingleOrDefaultAsync(m => m.TechniqueId == id);
             if (technique == null)
             {
                 return NotFound();
@@ -148,15 +149,15 @@ namespace BJJTrainer.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var technique = await _context.Technique.SingleOrDefaultAsync(m => m.TechniqueId == id);
-            _context.Technique.Remove(technique);
+            var technique = await _context.Techniques.SingleOrDefaultAsync(m => m.TechniqueId == id);
+            _context.Techniques.Remove(technique);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
         private bool TechniqueExists(int id)
         {
-            return _context.Technique.Any(e => e.TechniqueId == id);
+            return _context.Techniques.Any(e => e.TechniqueId == id);
         }
     }
 }
