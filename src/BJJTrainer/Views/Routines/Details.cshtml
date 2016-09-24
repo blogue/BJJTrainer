@@ -2,8 +2,25 @@
 
 @{
     ViewData["Title"] = "Details";
+    var total = 0;
 }
+<script type="text/javascript">
+    $(document).ready(function () {
+        @*var routine = {
+            "id": @Model.RoutineId,
+            };
 
+       $.ajax({
+            type: 'POST',
+            dataType: 'json',
+            data: JSON.stringify(routine),
+            url: '@Url.Action("TotalTime")',
+            success: function (result) {
+                $('#total-time').html(result);
+            }
+        });*@
+    });
+</script>
 <h2>Details</h2>
 
 <div>
@@ -43,11 +60,12 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => drill.Time)
-                </td>
+                </td>                
             </tr>
         }
     </tbody>
 </table>
+<div><h3>Total Routine Time: @ViewBag.TotalTime</h3></div>
 <hr />
 <div>
     <a asp-action="Edit" asp-route-id="@Model.RoutineId">Edit</a> |

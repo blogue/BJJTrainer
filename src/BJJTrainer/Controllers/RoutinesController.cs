@@ -44,6 +44,14 @@ namespace BJJTrainer.Controllers
                 .ThenInclude(d => d.Technique)
                 .ThenInclude(t => t.Position)
                 .SingleOrDefaultAsync(m => m.RoutineId == id);
+            int totalTime = 0;
+            foreach(var drill in routine.Drills)
+            {
+                totalTime += drill.Time;
+            }
+            TimeSpan ts = TimeSpan.FromSeconds(totalTime);
+            Console.WriteLine(ts.ToString());
+            ViewData["TotalTime"] = ts.ToString("mm':'ss");
             if (routine == null)
             {
                 return NotFound();
