@@ -61,28 +61,21 @@ namespace BJJTrainer.Controllers
             return View(routine);
         }
 
-        public string DisplayPositionTime()
+        public string DisplayPositionTime(int id)
         {
-            List<PositionTime> test = new List<PositionTime>
-            {
-                new PositionTime
-                {
-                    Position = "Guard",
-                    Time = 120
-                },
-                new PositionTime
-                {
-                    Position = "Mount",
-                    Time = 120
-                },
-                new PositionTime
-                {
-                    Position = "Side Control",
-                    Time = 120
-                },
-            };
+            List<PositionTime> positionTime = new List<PositionTime> { };
+            var routine = _context.Routines
+                .Include(r => r.Drills)
+                .ThenInclude(d => d.Technique)
+                .ThenInclude(t => t.Position)
+                .FirstOrDefault(r => r.RoutineId == id);
+            foreach(var drill in routine.Drills)
+            {               
+                positionTime.Add(new PositionTime(drill.Technique.Position.Name, drill.Time));                 
+            }
+            
             var settings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
-            return JsonConvert.SerializeObject(test, Formatting.None, settings);
+            return JsonConvert.SerializeObject(positionTime, Formatting.None, settings);
         }
 
         // GET: Routines/Create

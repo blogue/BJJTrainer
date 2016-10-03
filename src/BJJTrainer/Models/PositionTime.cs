@@ -9,10 +9,10 @@ namespace BJJTrainer.Models
     {
         public string Position { get; set; }
         public int Time { get; set; }
-        //public PositionTime(string position, int time)
-        //{
-        //    Position = position;
-        //    Time = time;
-        //}
+        public PositionTime(string position, int time)
+        {
+            Position = position;
+            Time = time;
+        }
     }
 }

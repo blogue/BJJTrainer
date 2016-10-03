@@ -5,26 +5,46 @@
 }
 <script type="text/javascript">
     $(document).ready(function () {
-        var id = @Model.RoutineId;
         $.ajax({
                 type: 'GET',
-                data: id,
-                url: '@Url.Action("DisplayPositionTime")',
+                url: '@Url.Action("DisplayPositionTime", new { @id = @Model.RoutineId })',
             success: function (result) {
-                console.log(result);
+                
                 google.charts.load('current', { 'packages': ['corechart'] });
                 google.charts.setOnLoadCallback(drawChart);
                 function drawChart() {
-                    
-                    var positionArray =[];
-                    
-                    debugger;
-                    $.each(JSON.parse(result), function(i, obj) {
-                        positionArray.push([obj.position, obj.time]);
-                    });
-                    var data = google.visualization.arrayToDataTable(positionArray, true);
-                   
 
+                    var filteredJson = [];
+                    var jsonResult = JSON.parse(result);
+                    var index;
+
+                    for (var i = 0; i < jsonResult.length; i++) {
+                        index = newDataContains(jsonResult[i].position);
+                        if (index == -1) {
+                            filteredJson.push({ position: jsonResult[i].position, time: jsonResult[i].time });
+                        } else {
+                            filteredJson[index].time += jsonResult[i].time;
+                        }
+                    }
+
+                    function newDataContains(position) {
+                        for (var i = 0; i < filteredJson.length; i++) {
+                            if (JSON.stringify(filteredJson[i].position) == JSON.stringify(position)) {
+                                return i;
+                                break;
+                            }
+                        }
+                        return -1;
+                    }
+                    
+                    //console.log(filteredJson);
+                    var jsonFinal = [];
+                    $.each(filteredJson, function (i, obj) {                      
+                    jsonFinal.push([obj.position, obj.time]);
+                    });
+                    
+                    var data = google.visualization.arrayToDataTable(jsonFinal, true);
+                    
                     var options = {
                         title: 'Positions'
                     };
