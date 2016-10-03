@@ -2,23 +2,39 @@
 
 @{
     ViewData["Title"] = "Details";
-    var total = 0;
 }
 <script type="text/javascript">
     $(document).ready(function () {
-        @*var routine = {
-            "id": @Model.RoutineId,
-            };
-
-       $.ajax({
-            type: 'POST',
-            dataType: 'json',
-            data: JSON.stringify(routine),
-            url: '@Url.Action("TotalTime")',
+        var id = @Model.RoutineId;
+        $.ajax({
+                type: 'GET',
+                data: id,
+                url: '@Url.Action("DisplayPositionTime")',
             success: function (result) {
-                $('#total-time').html(result);
+                console.log(result);
+                google.charts.load('current', { 'packages': ['corechart'] });
+                google.charts.setOnLoadCallback(drawChart);
+                function drawChart() {
+                    
+                    var positionArray =[];
+                    
+                    debugger;
+                    $.each(JSON.parse(result), function(i, obj) {
+                        positionArray.push([obj.position, obj.time]);
+                    });
+                    var data = google.visualization.arrayToDataTable(positionArray, true);
+                   
+
+                    var options = {
+                        title: 'Positions'
+                    };
+
+                    var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+                    chart.draw(data, options);
+                }
             }
-        });*@
+        });
     });
 </script>
 <h2>Details</h2>
@@ -71,3 +87,5 @@
     <a asp-action="Edit" asp-route-id="@Model.RoutineId">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
+
+<div id="piechart" style="width: 900px; height: 500px;"></div>

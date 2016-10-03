@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BJJTrainer.Models;
 using BJJTrainer.Data;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace BJJTrainer.Controllers
 {
@@ -50,7 +52,6 @@ namespace BJJTrainer.Controllers
                 totalTime += drill.Time;
             }
             TimeSpan ts = TimeSpan.FromSeconds(totalTime);
-            Console.WriteLine(ts.ToString());
             ViewData["TotalTime"] = ts.ToString("mm':'ss");
             if (routine == null)
             {
@@ -58,6 +59,30 @@ namespace BJJTrainer.Controllers
             }
 
             return View(routine);
+        }
+
+        public string DisplayPositionTime()
+        {
+            List<PositionTime> test = new List<PositionTime>
+            {
+                new PositionTime
+                {
+                    Position = "Guard",
+                    Time = 120
+                },
+                new PositionTime
+                {
+                    Position = "Mount",
+                    Time = 120
+                },
+                new PositionTime
+                {
+                    Position = "Side Control",
+                    Time = 120
+                },
+            };
+            var settings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
+            return JsonConvert.SerializeObject(test, Formatting.None, settings);
         }
 
         // GET: Routines/Create
