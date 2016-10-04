@@ -34,7 +34,11 @@ namespace BJJTrainer.Controllers
                 return NotFound();
             }
 
-            var drill = await _context.Drills.SingleOrDefaultAsync(m => m.DrillId == id);
+            var drill = await _context.Drills
+                .Include(d => d.Technique)
+                .ThenInclude(t => t.Position)
+                .Include(t => t.Technique.Category)
+                .SingleOrDefaultAsync(m => m.DrillId == id);
             if (drill == null)
             {
                 return NotFound();

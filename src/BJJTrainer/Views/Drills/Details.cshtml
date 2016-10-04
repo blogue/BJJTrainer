@@ -17,6 +17,24 @@
             @Html.DisplayFor(model => model.Description)
         </dd>
         <dt>
+            @Html.DisplayNameFor(model => model.Technique)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Technique.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Technique.Position)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Technique.Position.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Technique.Category)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Technique.Category.Name)
+        </dd>
+        <dt>
             @Html.DisplayNameFor(model => model.Time)
         </dt>
         <dd>
