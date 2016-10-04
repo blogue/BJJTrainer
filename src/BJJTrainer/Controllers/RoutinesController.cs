@@ -93,6 +93,22 @@ namespace BJJTrainer.Controllers
             return JsonConvert.SerializeObject(techniqueTime, Formatting.None, settings);
         }
 
+        public string DisplayCategoryTime(int id)
+        {
+            List<TypeTime> categoryTime = new List<TypeTime> { };
+            var routine = _context.Routines
+                .Include(r => r.Drills)
+                .ThenInclude(d => d.Technique)
+                .ThenInclude(t => t.Category)
+                .FirstOrDefault(r => r.RoutineId == id);
+            foreach (var drill in routine.Drills)
+            {
+                categoryTime.Add(new TypeTime(drill.Technique.Category.Name, drill.Time));
+            }
+            var settings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
+            return JsonConvert.SerializeObject(categoryTime, Formatting.None, settings);
+        }
+
         // GET: Routines/Create
         public IActionResult Create()
         {

@@ -5,6 +5,7 @@
 }
 <script type="text/javascript">
     $(document).ready(function () {
+        //Ajax call to display position chart
         $.ajax({
             type: 'GET',
             url: '@Url.Action("DisplayPositionTime", new { @id = @Model.RoutineId })',
@@ -13,12 +14,13 @@
                 google.charts.setOnLoadCallback(drawChart);
                 function drawChart() {
                     
-                    console.log(displayPieChart(result));
                     var jsonFinal = displayPieChart(result);
                     var data = google.visualization.arrayToDataTable(jsonFinal, true);
 
                     var options = {
-                        is3D: true,
+                        is3D: true,                    
+                        width: 900,
+                        height: 500
                     };
 
                     var chart = new google.visualization.PieChart(document.getElementById('piechart'));
@@ -27,7 +29,7 @@
                 }
             }
         });
-        ///End of first AJAX request
+        ///Ajax call to display technique chart
         $.ajax({
             type: 'GET',
             url: '@Url.Action("DisplayTechniqueTime", new { @id = @Model.RoutineId })',
@@ -37,7 +39,6 @@
                 function drawChart() {
 
                     var jsonFinal = displayPieChart(result);
-
                     var data = google.visualization.arrayToDataTable(jsonFinal, true);
 
                     var options = {
@@ -47,6 +48,30 @@
                     };
 
                     var chart = new google.visualization.PieChart(document.getElementById('piechart2'));
+
+                    chart.draw(data, options);
+                }
+            }
+        });
+        //Ajax call to display category time
+        $.ajax({
+            type: 'GET',
+            url: '@Url.Action("DisplayCategoryTime", new { @id = @Model.RoutineId })',
+            success: function (result) {
+                google.charts.load('current', { 'packages': ['corechart'] });
+                google.charts.setOnLoadCallback(drawChart);
+                function drawChart() {
+
+                    var jsonFinal = displayPieChart(result);
+                    var data = google.visualization.arrayToDataTable(jsonFinal, true);
+
+                    var options = {
+                        is3D: true,
+                        width: 900,
+                        height: 500
+                    };
+
+                    var chart = new google.visualization.PieChart(document.getElementById('piechart3'));
 
                     chart.draw(data, options);
                 }
@@ -118,11 +143,10 @@
                 <div id="piechart" style="width: 900px; height: 500px; margin-left: -50px;"></div>
             </div>
             <div id="techniques" class="tab-pane fade">
-                <div id="piechart2" style="width: 900px; height: 500px; margin-left: -50px;"></div>
+                <div id="piechart2" style="margin-left: -50px;"></div>
             </div>
             <div id="categories" class="tab-pane fade">
-                <h3>Categories</h3>
-                <p>Category piechart.</p>
+                <div id="piechart3" style="margin-left: -50px;"></div>
             </div>
         </div>
     </div>
