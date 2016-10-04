@@ -5,13 +5,13 @@ using System.Threading.Tasks;
 
 namespace BJJTrainer.Models
 {
-    public class PositionTime
+    public class TypeTime
     {
-        public string Position { get; set; }
+        public string Type { get; set; }
         public int Time { get; set; }
-        public PositionTime(string position, int time)
+        public TypeTime(string type, int time)
         {
-            Position = position;
+            Type = type;
             Time = time;
         }
     }

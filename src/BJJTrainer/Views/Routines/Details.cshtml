@@ -12,34 +12,9 @@
                 google.charts.load('current', { 'packages': ['corechart'] });
                 google.charts.setOnLoadCallback(drawChart);
                 function drawChart() {
-
-                    var filteredJson = [];
-                    var jsonResult = JSON.parse(result);
-                    var index;
-
-                    for (var i = 0; i < jsonResult.length; i++) {
-                        index = newDataContains(jsonResult[i].position);
-                        if (index == -1) {
-                            filteredJson.push({ position: jsonResult[i].position, time: jsonResult[i].time });
-                        } else {
-                            filteredJson[index].time += jsonResult[i].time;
-                        }
-                    }
-
-                    function newDataContains(position) {
-                        for (var i = 0; i < filteredJson.length; i++) {
-                            if (JSON.stringify(filteredJson[i].position) == JSON.stringify(position)) {
-                                return i;
-                                break;
-                            }
-                        }
-                        return -1;
-                    }
-                    var jsonFinal = [];
-                    $.each(filteredJson, function (i, obj) {
-                        jsonFinal.push([obj.position, obj.time]);
-                    });
-
+                    
+                    console.log(displayPieChart(result));
+                    var jsonFinal = displayPieChart(result);
                     var data = google.visualization.arrayToDataTable(jsonFinal, true);
 
                     var options = {
@@ -50,7 +25,7 @@
 
                     chart.draw(data, options);
                 }
-            }      
+            }
         });
         ///End of first AJAX request
         $.ajax({
@@ -61,33 +36,7 @@
                 google.charts.setOnLoadCallback(drawChart);
                 function drawChart() {
 
-                    var filteredJson = [];
-                    var jsonResult = JSON.parse(result);
-                    var index;
-                    for (var i = 0; i < jsonResult.length; i++) {
-                        index = newDataContains(jsonResult[i].position);
-                        if (index == -1) {
-                            filteredJson.push({ position: jsonResult[i].position, time: jsonResult[i].time });
-                        } else {
-                            filteredJson[index].time += jsonResult[i].time;
-                        }
-                    }
-                    console.log(filteredJson);
-
-                    function newDataContains(position) {
-                        for (var i = 0; i < filteredJson.length; i++) {
-                            if (JSON.stringify(filteredJson[i].position) == JSON.stringify(position)) {
-                                return i;
-                                break;
-                            }
-                        }
-                        return -1;
-                    }
-
-                    var jsonFinal = [];
-                    $.each(filteredJson, function (i, obj) {
-                        jsonFinal.push([obj.position, obj.time]);
-                    });
+                    var jsonFinal = displayPieChart(result);
 
                     var data = google.visualization.arrayToDataTable(jsonFinal, true);
 

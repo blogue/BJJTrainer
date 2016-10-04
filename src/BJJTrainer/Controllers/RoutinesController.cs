@@ -63,7 +63,7 @@ namespace BJJTrainer.Controllers
 
         public string DisplayPositionTime(int id)
         {
-            List<PositionTime> positionTime = new List<PositionTime> { };
+            List<TypeTime> positionTime = new List<TypeTime> { };
             var routine = _context.Routines
                 .Include(r => r.Drills)
                 .ThenInclude(d => d.Technique)
@@ -71,7 +71,7 @@ namespace BJJTrainer.Controllers
                 .FirstOrDefault(r => r.RoutineId == id);
             foreach(var drill in routine.Drills)
             {               
-                positionTime.Add(new PositionTime(drill.Technique.Position.Name, drill.Time));                 
+                positionTime.Add(new TypeTime(drill.Technique.Position.Name, drill.Time));                 
             }
             
             var settings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
@@ -80,17 +80,17 @@ namespace BJJTrainer.Controllers
 
         public string DisplayTechniqueTime(int id)
         {
-            List<PositionTime> positionTime = new List<PositionTime> { };
+            List<TypeTime> techniqueTime = new List<TypeTime> { };
             var routine = _context.Routines
                 .Include(r => r.Drills)
                 .ThenInclude(d => d.Technique)
                 .FirstOrDefault(r => r.RoutineId == id);
             foreach (var drill in routine.Drills)
             {
-                positionTime.Add(new PositionTime(drill.Technique.Name, drill.Time));
+                techniqueTime.Add(new TypeTime(drill.Technique.Name, drill.Time));
             }
             var settings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
-            return JsonConvert.SerializeObject(positionTime, Formatting.None, settings);
+            return JsonConvert.SerializeObject(techniqueTime, Formatting.None, settings);
         }
 
         // GET: Routines/Create
