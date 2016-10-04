@@ -11,7 +11,7 @@ This is a work in progress but the following functionlity will eventually be imp
 
 * A user will be able to add techniques and create drills. (Finished)
 * A user will be able to create routines and display a graphical breakdown of the routine with Google Charts API. (Finished)
-* Enable a user to embed YouTube videos on a drill's detail page. (Working on it)
+* Enable a user to embed YouTube videos on a drill's detail page. (Finished)
 * Allow a user to create Google Calendar event by adding routine to date. (Working on it)
 * Mark routine as completed, create log and chart user progress. (Working on it)
 

@@ -110,7 +110,7 @@
                 {
                     <tr>
                         <td>
-                            <a asp-area="" asp-controller="Drills" asp-action="Details" asp-route-id="@drill.TechniqueId">@drill.Description</a>
+                            @Html.ActionLink(drill.Description, "Details", "Drills", new { id = drill.DrillId })
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => drill.Technique.Name)
