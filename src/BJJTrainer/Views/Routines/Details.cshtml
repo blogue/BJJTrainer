@@ -52,6 +52,57 @@
                 }
             }      
         });
+        ///End of first AJAX request
+        $.ajax({
+            type: 'GET',
+            url: '@Url.Action("DisplayTechniqueTime", new { @id = @Model.RoutineId })',
+            success: function (result) {
+                google.charts.load('current', { 'packages': ['corechart'] });
+                google.charts.setOnLoadCallback(drawChart);
+                function drawChart() {
+
+                    var filteredJson = [];
+                    var jsonResult = JSON.parse(result);
+                    var index;
+                    for (var i = 0; i < jsonResult.length; i++) {
+                        index = newDataContains(jsonResult[i].position);
+                        if (index == -1) {
+                            filteredJson.push({ position: jsonResult[i].position, time: jsonResult[i].time });
+                        } else {
+                            filteredJson[index].time += jsonResult[i].time;
+                        }
+                    }
+                    console.log(filteredJson);
+
+                    function newDataContains(position) {
+                        for (var i = 0; i < filteredJson.length; i++) {
+                            if (JSON.stringify(filteredJson[i].position) == JSON.stringify(position)) {
+                                return i;
+                                break;
+                            }
+                        }
+                        return -1;
+                    }
+
+                    var jsonFinal = [];
+                    $.each(filteredJson, function (i, obj) {
+                        jsonFinal.push([obj.position, obj.time]);
+                    });
+
+                    var data = google.visualization.arrayToDataTable(jsonFinal, true);
+
+                    var options = {
+                        is3D: true,
+                        width:900,
+                        height:500
+                    };
+
+                    var chart = new google.visualization.PieChart(document.getElementById('piechart2'));
+
+                    chart.draw(data, options);
+                }
+            }
+        });
     });
 </script>
 <h2>Details</h2>
@@ -111,15 +162,14 @@
         <ul class="nav nav-pills" style="margin-top: -65px;">
             <li class="active"><a data-toggle="tab" href="#positions">Positions</a></li>
             <li><a data-toggle="tab" href="#techniques">Techniques</a></li>
-            <li><a data-toggle="tab" href="#mcategories">Categories</a></li>
+            <li><a data-toggle="tab" href="#categories">Categories</a></li>
         </ul>
         <div class="tab-content">
             <div id="positions" class="tab-pane fade in active">
                 <div id="piechart" style="width: 900px; height: 500px; margin-left: -50px;"></div>
             </div>
             <div id="techniques" class="tab-pane fade">
-                <h3>Techniques</h3>
-                <p>Technique piechart.</p>
+                <div id="piechart2" style="width: 900px; height: 500px; margin-left: -50px;"></div>
             </div>
             <div id="categories" class="tab-pane fade">
                 <h3>Categories</h3>
