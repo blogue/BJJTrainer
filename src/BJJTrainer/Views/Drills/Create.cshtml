@@ -37,6 +37,13 @@
                 <span asp-validation-for="Time" class="text-danger" />
             </div>
         </div>
+            <div class="form-group">
+                <label asp-for="Video" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="Video" minlength="11" maxlength="11"  class="form-control" />
+                    <span asp-validation-for="Video" class="text-danger" />
+                </div>
+            </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Create" class="btn btn-default" />

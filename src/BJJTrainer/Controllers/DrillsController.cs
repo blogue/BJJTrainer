@@ -66,7 +66,7 @@ namespace BJJTrainer.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("DrillId,Description,RoutineId,TechniqueId,Time")] Drill drill)
+        public async Task<IActionResult> Create([Bind("DrillId,Description,Video,RoutineId,TechniqueId,Time")] Drill drill)
         {
             if (ModelState.IsValid)
             {
