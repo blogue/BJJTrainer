@@ -6,10 +6,9 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $.ajax({
-                type: 'GET',
-                url: '@Url.Action("DisplayPositionTime", new { @id = @Model.RoutineId })',
+            type: 'GET',
+            url: '@Url.Action("DisplayPositionTime", new { @id = @Model.RoutineId })',
             success: function (result) {
-                
                 google.charts.load('current', { 'packages': ['corechart'] });
                 google.charts.setOnLoadCallback(drawChart);
                 function drawChart() {
@@ -36,24 +35,22 @@
                         }
                         return -1;
                     }
-                    
-                    //console.log(filteredJson);
                     var jsonFinal = [];
-                    $.each(filteredJson, function (i, obj) {                      
-                    jsonFinal.push([obj.position, obj.time]);
+                    $.each(filteredJson, function (i, obj) {
+                        jsonFinal.push([obj.position, obj.time]);
                     });
-                    
+
                     var data = google.visualization.arrayToDataTable(jsonFinal, true);
-                    
+
                     var options = {
-                        title: 'Positions'
+                        is3D: true,
                     };
 
                     var chart = new google.visualization.PieChart(document.getElementById('piechart'));
 
                     chart.draw(data, options);
                 }
-            }
+            }      
         });
     });
 </script>
@@ -63,49 +60,71 @@
     <h1>Routine: @Html.DisplayFor(model => model.Name)</h1>
     <hr />
 </div>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Description
-            </th>
-            <th>
-                Technique
-            </th>
-            <th>
-                Position
-            </th>
-            <th>
-                Time
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var drill in Model.Drills)
-        {
-            <tr>
-                <td>
-                    <a asp-area="" asp-controller="Drills" asp-action="Details" asp-route-id="@drill.TechniqueId">@drill.Description</a>
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => drill.Technique.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => drill.Technique.Position.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => drill.Time)
-                </td>                
-            </tr>
-        }
-    </tbody>
-</table>
-<div><h3>Total Routine Time: @ViewBag.TotalTime</h3></div>
-<hr />
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.RoutineId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+<div class="row">
+    <div class="col-md-6">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Description
+                    </th>
+                    <th>
+                        Technique
+                    </th>
+                    <th>
+                        Position
+                    </th>
+                    <th>
+                        Time
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var drill in Model.Drills)
+                {
+                    <tr>
+                        <td>
+                            <a asp-area="" asp-controller="Drills" asp-action="Details" asp-route-id="@drill.TechniqueId">@drill.Description</a>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => drill.Technique.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => drill.Technique.Position.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => drill.Time)
+                        </td>                
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div><h3>Total Routine Time: @ViewBag.TotalTime</h3></div>
+        <hr />
+        <div>
+            <a asp-action="Edit" asp-route-id="@Model.RoutineId">Edit</a> |
+            <a asp-action="Index">Back to List</a>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <ul class="nav nav-pills" style="margin-top: -65px;">
+            <li class="active"><a data-toggle="tab" href="#positions">Positions</a></li>
+            <li><a data-toggle="tab" href="#techniques">Techniques</a></li>
+            <li><a data-toggle="tab" href="#mcategories">Categories</a></li>
+        </ul>
+        <div class="tab-content">
+            <div id="positions" class="tab-pane fade in active">
+                <div id="piechart" style="width: 900px; height: 500px; margin-left: -50px;"></div>
+            </div>
+            <div id="techniques" class="tab-pane fade">
+                <h3>Techniques</h3>
+                <p>Technique piechart.</p>
+            </div>
+            <div id="categories" class="tab-pane fade">
+                <h3>Categories</h3>
+                <p>Category piechart.</p>
+            </div>
+        </div>
+    </div>
 </div>
-
-<div id="piechart" style="width: 900px; height: 500px;"></div>
