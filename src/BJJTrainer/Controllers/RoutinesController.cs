@@ -61,52 +61,31 @@ namespace BJJTrainer.Controllers
             return View(routine);
         }
 
-        public string DisplayPositionTime(int id)
+        public string GetRoutineData(int id)
         {
             List<TypeTime> positionTime = new List<TypeTime> { };
-            var routine = _context.Routines
-                .Include(r => r.Drills)
-                .ThenInclude(d => d.Technique)
-                .ThenInclude(t => t.Position)
-                .FirstOrDefault(r => r.RoutineId == id);
-            foreach(var drill in routine.Drills)
-            {               
-                positionTime.Add(new TypeTime(drill.Technique.Position.Name, drill.Time));                 
-            }
-            
-            var settings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
-            return JsonConvert.SerializeObject(positionTime, Formatting.None, settings);
-        }
-
-        public string DisplayTechniqueTime(int id)
-        {
             List<TypeTime> techniqueTime = new List<TypeTime> { };
-            var routine = _context.Routines
-                .Include(r => r.Drills)
-                .ThenInclude(d => d.Technique)
-                .FirstOrDefault(r => r.RoutineId == id);
-            foreach (var drill in routine.Drills)
-            {
-                techniqueTime.Add(new TypeTime(drill.Technique.Name, drill.Time));
-            }
-            var settings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
-            return JsonConvert.SerializeObject(techniqueTime, Formatting.None, settings);
-        }
-
-        public string DisplayCategoryTime(int id)
-        {
             List<TypeTime> categoryTime = new List<TypeTime> { };
+            List<List<TypeTime>> pieChartData = new List<List<TypeTime>> { };
             var routine = _context.Routines
                 .Include(r => r.Drills)
                 .ThenInclude(d => d.Technique)
                 .ThenInclude(t => t.Category)
+                .Include(r => r.Drills)
+                .ThenInclude(d => d.Technique)
+                .ThenInclude(t => t.Position)
                 .FirstOrDefault(r => r.RoutineId == id);
             foreach (var drill in routine.Drills)
             {
+                positionTime.Add(new TypeTime(drill.Technique.Position.Name, drill.Time));
+                techniqueTime.Add(new TypeTime(drill.Technique.Name, drill.Time));
                 categoryTime.Add(new TypeTime(drill.Technique.Category.Name, drill.Time));
             }
+            pieChartData.Add(positionTime);
+            pieChartData.Add(techniqueTime);
+            pieChartData.Add(categoryTime);
             var settings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
-            return JsonConvert.SerializeObject(categoryTime, Formatting.None, settings);
+            return JsonConvert.SerializeObject(pieChartData, Formatting.None, settings);
         }
 
         // GET: Routines/Create

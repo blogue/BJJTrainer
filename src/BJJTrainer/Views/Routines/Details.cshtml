@@ -5,20 +5,21 @@
 }
 <script type="text/javascript">
     $(document).ready(function () {
-        //Ajax call to display position chart
         $.ajax({
             type: 'GET',
-            url: '@Url.Action("DisplayPositionTime", new { @id = @Model.RoutineId })',
-            success: function (result) {
+            url: '@Url.Action("GetRoutineData", new { @id = @Model.RoutineId })',
+            success: function (dataResult) {
+                var result = JSON.parse(dataResult);
+                //Draw position pie chart
                 google.charts.load('current', { 'packages': ['corechart'] });
-                google.charts.setOnLoadCallback(drawChart);
-                function drawChart() {
-                    
-                    var jsonFinal = displayPieChart(result);
+                google.charts.setOnLoadCallback(drawChart1);
+                function drawChart1() {
+                    console.log(result[0]);
+                    var jsonFinal = formatJson(result[0]);
                     var data = google.visualization.arrayToDataTable(jsonFinal, true);
 
                     var options = {
-                        is3D: true,                    
+                        is3D: true,
                         width: 900,
                         height: 500
                     };
@@ -27,42 +28,27 @@
 
                     chart.draw(data, options);
                 }
-            }
-        });
-        ///Ajax call to display technique chart
-        $.ajax({
-            type: 'GET',
-            url: '@Url.Action("DisplayTechniqueTime", new { @id = @Model.RoutineId })',
-            success: function (result) {
-                google.charts.load('current', { 'packages': ['corechart'] });
-                google.charts.setOnLoadCallback(drawChart);
-                function drawChart() {
-
-                    var jsonFinal = displayPieChart(result);
+                //Draw technique piechart
+                google.charts.setOnLoadCallback(drawChart2);
+                function drawChart2() {
+                    console.log(result[1]);
+                    var jsonFinal = formatJson(result[1]);
                     var data = google.visualization.arrayToDataTable(jsonFinal, true);
 
                     var options = {
                         is3D: true,
-                        width:900,
-                        height:500
+                        width: 900,
+                        height: 500
                     };
 
                     var chart = new google.visualization.PieChart(document.getElementById('piechart2'));
-
                     chart.draw(data, options);
                 }
-            }
-        });
-        //Ajax call to display category chart
-        $.ajax({
-            type: 'GET',
-            url: '@Url.Action("DisplayCategoryTime", new { @id = @Model.RoutineId })',
-            success: function (result) {
-                google.charts.load('current', { 'packages': ['corechart'] });
-                google.charts.setOnLoadCallback(drawChart);
-                function drawChart() {
-
-                    var jsonFinal = displayPieChart(result);
+                //Draw category piechart
+                google.charts.setOnLoadCallback(drawChart3);
+                function drawChart3() {
+                    console.log(result[2]);
+                    var jsonFinal = formatJson(result[2]);
                     var data = google.visualization.arrayToDataTable(jsonFinal, true);
 
                     var options = {
@@ -79,10 +65,10 @@
         });
     });
 </script>
-<h2>Details</h2>
+<h2>Routine details</h2>
 
 <div>
-    <h1>Routine: @Html.DisplayFor(model => model.Name)</h1>
+    <h1>@Html.DisplayFor(model => model.Name)</h1>
     <hr />
 </div>
 <div class="row">
