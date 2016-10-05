@@ -9,6 +9,7 @@ using BJJTrainer.Models;
 using BJJTrainer.Data;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BJJTrainer.Controllers
 {
@@ -34,6 +35,7 @@ namespace BJJTrainer.Controllers
         }
 
         // GET: Routines/Details/5
+        [Authorize]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -89,6 +91,7 @@ namespace BJJTrainer.Controllers
         }
 
         // GET: Routines/Create
+        [Authorize]
         public IActionResult Create()
         {
             return View();
@@ -111,6 +114,7 @@ namespace BJJTrainer.Controllers
         }
 
         // GET: Routines/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -162,6 +166,7 @@ namespace BJJTrainer.Controllers
         }
 
         // GET: Routines/Delete/5
+        [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BJJTrainer.Models;
 using BJJTrainer.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BJJTrainer.Controllers
 {
@@ -50,6 +51,7 @@ namespace BJJTrainer.Controllers
         }
 
         // GET: Categories/Create
+        [Authorize]
         public IActionResult Create()
         {
             return View();
@@ -72,6 +74,7 @@ namespace BJJTrainer.Controllers
         }
 
         // GET: Categories/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -123,6 +126,7 @@ namespace BJJTrainer.Controllers
         }
 
         // GET: Categories/Delete/5
+        [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
