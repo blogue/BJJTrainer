@@ -9,5 +9,9 @@ namespace BJJTrainer.Models
     // Add profile data for application users by adding properties to the ApplicationUser class
     public class ApplicationUser : IdentityUser
     {
+        public string Affiliation { get; set; }
+        public string Rank { get; set; }
+        public string Location { get; set; }
+        public string Bio { get; set; }
     }
 }

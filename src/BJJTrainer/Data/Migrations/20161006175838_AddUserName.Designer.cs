@@ -8,9 +8,10 @@ using BJJTrainer.Data;
 namespace BJJTrainer.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20161006175838_AddUserName")]
+    partial class AddUserName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.1")
@@ -22,10 +23,6 @@ namespace BJJTrainer.Data.Migrations
 
                     b.Property<int>("AccessFailedCount");
 
-                    b.Property<string>("Affiliation");
-
-                    b.Property<string>("Bio");
-
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
@@ -33,8 +30,6 @@ namespace BJJTrainer.Data.Migrations
                         .HasAnnotation("MaxLength", 256);
 
                     b.Property<bool>("EmailConfirmed");
-
-                    b.Property<string>("Location");
 
                     b.Property<bool>("LockoutEnabled");
 
@@ -51,8 +46,6 @@ namespace BJJTrainer.Data.Migrations
                     b.Property<string>("PhoneNumber");
 
                     b.Property<bool>("PhoneNumberConfirmed");
-
-                    b.Property<string>("Rank");
 
                     b.Property<string>("SecurityStamp");
 
